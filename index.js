@@ -19,6 +19,14 @@ const run = async () => {
         await client.connect();
         const productCollection = client.db('SuperrTools').collection('products');
 
+        app.get('/tools', async (req, res) => {
+            const pageNo = parseInt(req.query.page);
+            const productsQuantityToShow = parseInt(req.query.quantity);
+            const tools = await productCollection.find().skip(pageNo*productCollection).limit(productsQuantityToShow).toArray();
+
+            res.send(tools);
+        })
+
         app.get('/check-mongo-connection', (req, res) => {
             res.send('MongoDB connected successfully, YAY!');
         })
