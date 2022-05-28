@@ -109,6 +109,29 @@ const run = async () => {
             res.send(result);
         });
 
+        // update user role
+        app.put('/update-user-role', verifyToken, verifyAdmin, async (req, res) => {
+            const user = req.body.user;
+            const isAdmin = req.body.isAdmin;
+            
+            const filter = {user: user};
+            const options = {upsert: true};
+            const updateDoc = {
+                $set: {
+                    role: isAdmin ? 'admin' : 'user'
+                }
+            };
+            const result = await userCollection.updateOne(filter, updateDoc, options);
+
+            res.send(result);
+        })
+
+        // get all user
+        app.get('/users', async (req, res) => {
+            const users = await userCollection.find().toArray();
+            res.send(users);
+        })
+
         app.post('/order', async (req, res) => {
             const order = req.body;
             const result = await orderCollection.insertOne(order);
