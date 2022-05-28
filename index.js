@@ -10,7 +10,8 @@ const port = process.env.PORT || 5000;
 
 // use middleware
 
-app.use(cors({origin: 'https://superr-tools.web.app'}))
+// app.use(cors({origin: 'https://superr-tools.web.app'}));
+app.use(cors());
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.gfl5mwm.mongodb.net/?retryWrites=true&w=majority`;
@@ -117,7 +118,7 @@ const run = async () => {
         // get order based on user
         app.get('/orders', verifyToken, async (req, res) => {
             const email = req.query.email;
-            const query = {user: email};
+            const query = {email: email};
             const orders = await orderCollection.find(query).toArray();
             res.send(orders);
         });
