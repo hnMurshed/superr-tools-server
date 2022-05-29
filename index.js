@@ -64,7 +64,7 @@ const run = async () => {
             res.send(tools);
         });
 
-        app.post('/addproduct', async (req, res) => {
+        app.post('/addproduct', verifyToken, verifyAdmin, async (req, res) => {
             const product = req.body;
             const result = await productCollection.insertOne(product);
             res.send(result);
