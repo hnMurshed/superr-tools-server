@@ -23,6 +23,7 @@ const run = async () => {
         const productCollection = client.db('SuperrTools').collection('products');
         const userCollection = client.db('SuperrTools').collection('users');
         const orderCollection = client.db('SuperrTools').collection('orders');
+        const userProfileCollection = client.db('SuperrTools').collection('userProfiles');
 
         // verify access token
         const verifyToken = (req, res, next) => {
@@ -153,6 +154,33 @@ const run = async () => {
             res.send({ admin: isAdmin });
           });
 
+        app.put('/user-profile', verifyToken, async (req, res) => {
+            const user = req.decoded.user;
+            const profile = req.body;
+            console.log(user);
+            console.log('profile', profile);
+            const filter = {user: user};
+            const options = {upsert: true};
+            const updateDoc = {
+                $set: {
+                    user: user,
+                    profile: profile
+                }
+            }
+            const result = await userProfileCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
+        });
+
+        // get user profile
+        app.get('/user-profile', verifyToken, async (req, res) => {
+            const user = req.decoded.user;
+            console.log(user);
+            const query = {user: user};
+            const profile = await userProfileCollection.findOne(query);
+
+            res.send(profile);
+        });
+        // checking connection
         app.get('/check-mongo-connection', (req, res) => {
             res.send('MongoDB connected successfully, YAY!');
         })
