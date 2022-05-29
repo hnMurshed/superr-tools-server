@@ -159,6 +159,14 @@ const run = async () => {
             res.send(orders);
         });
 
+        // cancel order
+        app.delete('/cancelorder/:id', verifyToken, async (req, res) => {
+            const id = req.params.id;
+            const filter = {_id: ObjectId(id)};
+            const result = await orderCollection.deleteOne(filter);
+            res.send(result);
+        })
+
         app.get('/checkadmin', async (req, res) => {
             const email = req.headers.email;
             const user = await userCollection.findOne({ user: email });
