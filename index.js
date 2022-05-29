@@ -70,6 +70,13 @@ const run = async () => {
             res.send(result);
         });
 
+        app.delete('/deleteproduct/:id', verifyToken, verifyAdmin, async (req, res) => {
+            const id = req.params.id;
+            const filter = {_id: ObjectId(id)};
+            const result = await productCollection.deleteOne(filter);
+            res.send(result);
+        })
+
         app.get('/tool/:id', async (req, res) => {
             const id = req.params.id;
             const query = {_id: ObjectId(id)};
@@ -144,6 +151,11 @@ const run = async () => {
             const email = req.query.email;
             const query = {email: email};
             const orders = await orderCollection.find(query).toArray();
+            res.send(orders);
+        });
+        // get all orders
+        app.get('/allorders', verifyToken, verifyAdmin, async (req, res) => {
+            const orders = await orderCollection.find().toArray();
             res.send(orders);
         });
 
