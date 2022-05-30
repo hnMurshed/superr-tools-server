@@ -10,8 +10,8 @@ const port = process.env.PORT || 5000;
 
 // use middleware
 
-app.use(cors({origin: 'https://superr-tools.web.app'}));
-// app.use(cors());
+// app.use(cors({origin: 'https://superr-tools.web.app'}));
+app.use(cors());
 app.use(express.json());
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.gfl5mwm.mongodb.net/?retryWrites=true&w=majority`;
