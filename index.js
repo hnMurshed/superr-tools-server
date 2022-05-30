@@ -24,6 +24,7 @@ const run = async () => {
         const userCollection = client.db('SuperrTools').collection('users');
         const orderCollection = client.db('SuperrTools').collection('orders');
         const userProfileCollection = client.db('SuperrTools').collection('userProfiles');
+        const reviewCollection = client.db('SuperrTools').collection('reviews');
 
         // verify access token
         const verifyToken = (req, res, next) => {
@@ -200,6 +201,21 @@ const run = async () => {
 
             res.send(profile);
         });
+
+        // posting a review
+        app.post('/postreview', async (req, res) => {
+            const review = req.body;
+            const result = await reviewCollection.insertOne(review);
+            res.send(result);
+        });
+
+        // getting all reviews
+        app.get('/getreviews', async (req, res) => {
+            const reviews = await reviewCollection.find().toArray();
+            res.send(reviews);
+        })
+
+
         // checking connection
         app.get('/check-mongo-connection', (req, res) => {
             res.send('MongoDB connected successfully, YAY!');
