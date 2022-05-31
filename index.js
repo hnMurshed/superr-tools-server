@@ -178,7 +178,7 @@ const run = async () => {
         app.get('/checkadmin', async (req, res) => {
             const email = req.headers.email;
             const user = await userCollection.findOne({ user: email });
-            const isAdmin = user.role === 'admin';
+            const isAdmin = user?.role === 'admin';
             res.send({ admin: isAdmin });
           });
 
