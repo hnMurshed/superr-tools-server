@@ -195,7 +195,7 @@ const run = async () => {
         // get user profile
         app.get('/user-profile', verifyToken, async (req, res) => {
             const user = req.decoded.user;
-            console.log(user);
+            console.log('from inside get user profile', user);
             const query = {user: user};
             const profile = await userProfileCollection.findOne(query);
 
